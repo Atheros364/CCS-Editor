@@ -190,9 +190,18 @@ namespace WindowsFormsApplication1
             //TODO find the split point and write all of the lines
             //go through and compare the times to the split time.
             //Keeps track of total length and when that is larger than split time, and when that is larger than running time, split the clip.
+            int runningTime = 0;//keep track of the current time in the ccs(in sec)
+            int splitingTime = toSec(timeArray);
+            bool hasSplit = false;
             for (int i = segStart + 1; i < segEnd; i++)
             {
-
+                //get the times, find difference, add to running time
+                //if running time is more than splitting time then split, otherwise keep going
+                //once it is split go till end
+                if (!hasSplit)
+                {
+                    //make substrings of the timestamps, format them, change to sec, and add to running time
+                }
 
             }
 
@@ -204,6 +213,13 @@ namespace WindowsFormsApplication1
 
             Completed prompt = new Completed();
             prompt.ShowDialog();
+        }
+
+        private int toSec(int[] timeArray)
+        {
+            int time = 0;
+            time = timeArray[0] * 3600 + timeArray[1] * 60 + timeArray[3];
+            return time;
         }
 
         private int[] getTime(string timeString)
