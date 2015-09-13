@@ -201,6 +201,22 @@ namespace WindowsFormsApplication1
                 if (!hasSplit)
                 {
                     //make substrings of the timestamps, format them, change to sec, and add to running time
+                    //Then check to see if that time is greater than the splitting time
+                    string segStartTime = origFile[i].Substring(1,1);//These values are very wrong TODO
+                    string segEndTime = origFile[i].Substring(2,1);
+                    runningTime += toSec(getTime(segEndTime)) - toSec(getTime(segStartTime));//add the difference in segment start and stop times
+                    if(runningTime > splitingTime)
+                    {
+                        sb.AppendLine();
+                        sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+                        clipCount++;
+                        hasSplit = true;
+                    }
+                    sb.AppendLine(origFile[i]);
+                }
+                else
+                {
+                    sb.AppendLine(origFile[i]);
                 }
 
             }
