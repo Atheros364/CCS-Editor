@@ -75,15 +75,17 @@ namespace WindowsFormsApplication1
             sb.AppendLine();
             for(int i = segStart; i < segEnd; i++)
             {
-                sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+                sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
                 sb.AppendLine(origFile[i]);
                 sb.AppendLine();
                 clipCount++;
             }
 
 
-            // Write the stream contents to a new file named "editedclips.ccs".
-            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\editedclips.ccs"))
+            // Write the stream contents to a new file with the file name + "EDIT".
+            string fullPath = textBox1.Text;
+            string fileName = fullPath.Substring(mydocpath.Length + 1, fullPath.Length - mydocpath.Length - 5);
+            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\" + fileName + "EDIT.ccs"))
             {
                 outfile.Write(sb.ToString());
             }
@@ -116,7 +118,7 @@ namespace WindowsFormsApplication1
             int segEnd = origFile.Length - 1;
             sb.AppendLine(origFile[0]);//write in the transcript name through the first segment
             sb.AppendLine();
-            sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+            sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
             clipCount++;
             sb.AppendLine(origFile[segStart]);
 
@@ -129,7 +131,7 @@ namespace WindowsFormsApplication1
                 if (firstPage > secondPage)//add in a clip id if the first segment is greater than the second segment
                 {
                     sb.AppendLine();
-                    sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+                    sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
                     clipCount++;
                 }
                 else if(firstPage == secondPage)
@@ -137,7 +139,7 @@ namespace WindowsFormsApplication1
                     if(firstLine > secondLine)
                     {
                         sb.AppendLine();
-                        sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+                        sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
                         clipCount++;
                     }
                 }
@@ -145,8 +147,10 @@ namespace WindowsFormsApplication1
                 sb.AppendLine(origFile[i]);
             }
 
-            // Write the stream contents to a new file named "editedclips.ccs".
-            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\editedclips.ccs"))
+            // Write the stream contents to a new file with the file name + "EDIT".
+            string fullPath = textBox1.Text;
+            string fileName = fullPath.Substring(mydocpath.Length + 1, fullPath.Length - mydocpath.Length - 5);
+            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\" + fileName + "EDIT.ccs"))
             {
                 outfile.Write(sb.ToString());
             }
@@ -157,7 +161,6 @@ namespace WindowsFormsApplication1
 
         private void splitTime(string filePath)
         {
-            //TODO
             //Load the data, add the clip ID lines and output in new file
             string[] origFile = getText(filePath);
             string splitTime = textBox2.Text;
@@ -172,7 +175,7 @@ namespace WindowsFormsApplication1
             {
                 return;
             }
-            Console.WriteLine(timeArray[0] + "," + timeArray[1] + "," + timeArray[2] + "." + timeArray[3]);
+            //Console.WriteLine(timeArray[0] + ":" + timeArray[1] + ":" + timeArray[2] + "." + timeArray[3]);
 
             //get the clip name
             string clipBaseName = origFile[2].Substring(2, origFile[2].Length - 3);
@@ -188,7 +191,7 @@ namespace WindowsFormsApplication1
             int segEnd = origFile.Length - 1;
             sb.AppendLine(origFile[0]);//write in the transcript name through the first segment
             sb.AppendLine();
-            sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+            sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
             clipCount++;
             sb.AppendLine(origFile[segStart]);
 
@@ -216,7 +219,7 @@ namespace WindowsFormsApplication1
                     if(runningTime > splitingTime)
                     {
                         sb.AppendLine();
-                        sb.AppendLine("C(" + clipBaseName + clipCount + ")");
+                        sb.AppendLine("C(" + clipBaseName + "-" + clipCount + ")");
                         clipCount++;
                         hasSplit = true;
                     }
@@ -229,8 +232,10 @@ namespace WindowsFormsApplication1
 
             }
 
-            // Write the stream contents to a new file named "editedclips.ccs".
-            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\editedclips.ccs"))
+            // Write the stream contents to a new file with the file name + "EDIT".
+            string fullPath = textBox1.Text;
+            string fileName = fullPath.Substring(mydocpath.Length + 1, fullPath.Length - mydocpath.Length - 5);
+            using (StreamWriter outfile = new StreamWriter(mydocpath + @"\" + fileName + "EDIT.ccs"))
             {
                 outfile.Write(sb.ToString());
             }
