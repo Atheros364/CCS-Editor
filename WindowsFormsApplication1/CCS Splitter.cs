@@ -167,7 +167,12 @@ namespace WindowsFormsApplication1
                 return;
             }
             int[] timeArray = getTime(splitTime);//get the text time into numbers
-            Console.WriteLine(timeArray[0] + "," + timeArray[1] + "," + timeArray[2] + ",," + timeArray[3]);
+            int[] invalidTime = { 0, 0, 0, 0 };
+            if (timeArray[0] == invalidTime[0] && timeArray[1] == invalidTime[1] && timeArray[2] == invalidTime[2] && timeArray[3] == invalidTime[3])
+            {
+                return;
+            }
+            Console.WriteLine(timeArray[0] + "," + timeArray[1] + "," + timeArray[2] + "." + timeArray[3]);
 
             //get the clip name
             string clipBaseName = origFile[2].Substring(2, origFile[2].Length - 3);
@@ -187,9 +192,7 @@ namespace WindowsFormsApplication1
             clipCount++;
             sb.AppendLine(origFile[segStart]);
 
-            //TODO find the split point and write all of the lines
-            //go through and compare the times to the split time.
-            //Keeps track of total length and when that is larger than split time, and when that is larger than running time, split the clip.
+
             int runningTime = 0;//keep track of the current time in the ccs(in sec)
             int splitingTime = toSec(timeArray);
             bool hasSplit = false;
@@ -202,9 +205,14 @@ namespace WindowsFormsApplication1
                 {
                     //make substrings of the timestamps, format them, change to sec, and add to running time
                     //Then check to see if that time is greater than the splitting time
-                    string segStartTime = origFile[i].Substring(1,1);//These values are very wrong TODO
-                    string segEndTime = origFile[i].Substring(2,1);
+                    string segStartTime = origFile[i].Substring(22, 12);
+                    string segEndTime = origFile[i].Substring(37,12);
+                    //Console.WriteLine(segStartTime + "-" + segEndTime);
+                    int[] checkSegStartTime = getTime(segStartTime);
+                    int[] checkSegEndTime = getTime(segEndTime);
                     runningTime += toSec(getTime(segEndTime)) - toSec(getTime(segStartTime));//add the difference in segment start and stop times
+                    //Console.WriteLine(toSec(getTime(segEndTime)) + "-" + toSec(getTime(segStartTime)));
+                    //Console.WriteLine(runningTime);
                     if(runningTime > splitingTime)
                     {
                         sb.AppendLine();
@@ -234,7 +242,7 @@ namespace WindowsFormsApplication1
         private int toSec(int[] timeArray)
         {
             int time = 0;
-            time = timeArray[0] * 3600 + timeArray[1] * 60 + timeArray[3];
+            time = timeArray[0] * 3600 + timeArray[1] * 60 + timeArray[2];
             return time;
         }
 
@@ -250,7 +258,7 @@ namespace WindowsFormsApplication1
             string timeSecS = "00";
             string timeMSecS = "00";
             int timeType = 0;
-            int location = 0;
+            int location = timeString.Length;
             try
             {
                 for (int i = timeString.Length; i > 0; i--)
@@ -261,12 +269,12 @@ namespace WindowsFormsApplication1
                         {
                             timeMSecS = timeString.Substring(i, timeString.Length - i);
                             timeMSec = Convert.ToInt32(timeMSecS);
-                            location = i;
+                            location = i-1;
                         }
                         if (timeString[i - 1] == ':')
                         {
 
-                            timeSecS = timeString.Substring(i, location - i - 1);
+                            timeSecS = timeString.Substring(i, location - i);
                             timeSec = Convert.ToInt32(timeSecS);
                             timeType++;
                             location = i;
